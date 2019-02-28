@@ -15,6 +15,7 @@
       <PackageReference Include="System.Composition" Version="1.2.0" />
       <PackageReference Include="System.Composition.Hosting" Version="1.2.0" />
       <PackageReference Include="System.Management" Version="4.5.0" />
+      <PackageReference Include="System.Private.ServiceModel" Version="4.5.3" />
     </ItemGroup>
 
 </Project>
