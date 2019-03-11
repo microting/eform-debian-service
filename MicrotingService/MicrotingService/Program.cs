@@ -52,7 +52,7 @@ namespace MicrotingService
             else
             {
                 var mainSettings = ConnectionStringManager.Read(filePath);
-                serverConnectionString = mainSettings?.ConnectionStrings?.DefaultConnection;
+                serverConnectionString = mainSettings?.ConnectionStrings?.DefaultConnection.Replace("Angular", "SDK");
             }
             
             
