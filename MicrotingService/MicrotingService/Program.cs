@@ -64,9 +64,7 @@ namespace MicrotingService
             //serveiceLogic.OverrideServiceLocation("c:\\microtingservice\\" + fakedServiceName + "\\");
 
             serveiceLogic.Start(serverConnectionString);
-            Console.WriteLine("Press any key to close");
-            Console.ReadKey();
-            serveiceLogic.Stop();
+//            serveiceLogic.Stop();
         }
     }
 }
