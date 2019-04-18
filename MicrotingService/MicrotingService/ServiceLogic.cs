@@ -49,10 +49,10 @@ namespace MicrotingService
                         foreach (string dir in Directory.GetDirectories(path))
                         {
                             LogEvent("Loading Plugin : " + dir);
-                            if (Directory.Exists(Path.Combine(dir, "netstandard2.0")))
+                            if (Directory.Exists(Path.Combine(dir, "netcoreapp2.2")))
                             {
-                                LogEvent("Loading Plugin : " + Path.Combine(dir, "netstandard2.0"));
-                                catalog.Catalogs.Add(new DirectoryCatalog(Path.Combine(dir, "netstandard2.0")));
+                                LogEvent("Loading Plugin : " + Path.Combine(dir, "netcoreapp2.2"));
+                                catalog.Catalogs.Add(new DirectoryCatalog(Path.Combine(dir, "netcoreapp2.2")));
                             } else
                             {
                                 LogEvent("Loading Plugin : " + dir);
@@ -200,13 +200,13 @@ namespace MicrotingService
                 return serviceLocation;
 
             serviceLocation = System.Reflection.Assembly.GetExecutingAssembly().Location;
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
-                serviceLocation = Path.GetDirectoryName(serviceLocation) + "/";
+                serviceLocation = Path.GetDirectoryName(serviceLocation) + "\\";
             }
             else
             {
-                serviceLocation = Path.GetDirectoryName(serviceLocation) + "\\";
+                serviceLocation = Path.GetDirectoryName(serviceLocation) + "/";
             }
             
             LogEvent("serviceLocation:'" + serviceLocation + "'");
