@@ -1,4 +1,3 @@
-using eFormShared;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,6 +8,8 @@ using System.ComponentModel.Composition.Hosting;
 using System.ComponentModel.Composition;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using Microting.eForm;
+using Microting.eForm.Dto;
 using Microting.WindowsService.BasePn;
 
 namespace MicrotingService
