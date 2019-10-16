@@ -3,9 +3,9 @@
 GIT_STATUS=`git status | grep "nothing to commit, working tree clean" | wc -l`
 if (( "$GIT_STATUS" > 0 )); then
 	git pull
-	cd eFormApi.BasePn
+	cd MicrotingService/MicrotingService
 
-	dotnet add eFormApi.BasePn.csproj package Microting.eForm
+	dotnet add MicrotingService.csproj package Microting.eForm
 
 	EFORM_VERSION=`dotnet list package | grep 'Microting.eForm ' | cut -c64-71`
 
