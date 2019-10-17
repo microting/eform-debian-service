@@ -24,3 +24,4 @@ script:
   - ./rabbitmqadmin declare queue name=eformsdk-input durable=true
   - ./rabbitmqadmin declare queue name=eform-service-monitoring-plugin durable=true
   - dotnet restore
+  - dotnet build MicrotingService.sln
