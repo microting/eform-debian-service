@@ -17,14 +17,16 @@ namespace MicrotingService
     public class ServiceLogic
     {
         #region var
-        eFormCore.Core sdkCore;
 
         Tools t = new Tools();
-        string serviceLocation;
-        private CompositionContainer _container;
+        private string _serviceLocation;
+        
+#pragma warning disable 649
+        private readonly eFormCore.Core _sdkCore;
+#pragma warning restore 649
 
-        [ImportMany]
-        IEnumerable<Lazy<ISdkEventHandler>> eventHandlers;
+        [ImportMany] 
+        private IEnumerable<Lazy<ISdkEventHandler>> _eventHandlers;
         #endregion
 
         //con
@@ -34,8 +36,8 @@ namespace MicrotingService
             {
                 LogEvent("Service called");
                 {
-                    serviceLocation = "";
-                    sdkCore = new eFormCore.Core();
+                    _serviceLocation = "";
+                    _sdkCore = new eFormCore.Core();
 
                     //An aggregate catalog that combines multiple catalogs
                     var catalog = new AggregateCatalog();
@@ -67,12 +69,12 @@ namespace MicrotingService
                         LogException(e.Message);
                     }
                     //Create the CompositionContainer with the parts in the catalog
-                    _container = new CompositionContainer(catalog);
+                    CompositionContainer container = new CompositionContainer(catalog);
 
                     //Fill the imports of this object
                     try
                     {
-                        this._container.ComposeParts(this);
+                        container.ComposeParts(this);
                     }
                     catch (CompositionException compositionException)
                     {
@@ -101,7 +103,7 @@ namespace MicrotingService
             try
             {
 
-                foreach (Lazy<ISdkEventHandler> i in eventHandlers)
+                foreach (Lazy<ISdkEventHandler> i in _eventHandlers)
                 {
                     LogEvent("Trying to start plugin : " + i.Value.GetType().ToString());
                     i.Value.Start(sdkSqlCoreStr, GetServiceLocation());
@@ -129,21 +131,21 @@ namespace MicrotingService
                     #region event connecting
                     try
                     {
-                        sdkCore.HandleEventException -= CoreEventException;
-                        sdkCore.HandleCaseRetrived += _caseRetrived;
-                        sdkCore.HandleCaseCompleted += _caseCompleted;
-                        sdkCore.HandleNotificationNotFound += _caseCompleted;
+                        _sdkCore.HandleEventException -= CoreEventException;
+                        _sdkCore.HandleCaseRetrived += _caseRetrived;
+                        _sdkCore.HandleCaseCompleted += _caseCompleted;
+                        _sdkCore.HandleNotificationNotFound += _caseCompleted;
                         LogEvent("Core exception events disconnected (if needed)");
                     }
                     catch { }
 
-                    sdkCore.HandleEventException += CoreEventException;
+                    _sdkCore.HandleEventException += CoreEventException;
                     LogEvent("Core exception events connected");
                     #endregion
 
                     LogEvent("sdkSqlCoreStr, " + sdkSqlCoreStr);
 
-                    sdkCore.Start(sdkSqlCoreStr);
+                    _sdkCore.Start(sdkSqlCoreStr);
                     LogEvent("SDK Core started");
                     #endregion                  
                 }
@@ -165,7 +167,7 @@ namespace MicrotingService
                     try
                     {
 
-                        foreach (Lazy<ISdkEventHandler> i in eventHandlers)
+                        foreach (Lazy<ISdkEventHandler> i in _eventHandlers)
                         {
                             LogEvent("Trying to stop plugin : " + i.Value.GetType().ToString());
                             i.Value.Stop(false);
@@ -176,7 +178,7 @@ namespace MicrotingService
                     {
                         LogException("Stop got exception : " + e.Message);
                     }
-                    sdkCore.Close();
+                    _sdkCore.Close();
                     LogEvent("SDK Core closed");
                 }
                 LogEvent("Service Close completed");
@@ -189,7 +191,7 @@ namespace MicrotingService
 
         public void OverrideServiceLocation(string serviceLocation)
         {
-            this.serviceLocation = serviceLocation;
+            this._serviceLocation = serviceLocation;
             LogEvent("serviceLocation:'" + serviceLocation + "'");
         }
         #endregion
@@ -197,22 +199,22 @@ namespace MicrotingService
         #region private
         private string GetServiceLocation()
         {
-            if (serviceLocation != "")
-                return serviceLocation;
+            if (_serviceLocation != "")
+                return _serviceLocation;
 
-            serviceLocation = System.Reflection.Assembly.GetExecutingAssembly().Location;
+            _serviceLocation = System.Reflection.Assembly.GetExecutingAssembly().Location;
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
-                serviceLocation = Path.GetDirectoryName(serviceLocation) + "\\";
+                _serviceLocation = Path.GetDirectoryName(_serviceLocation) + "\\";
             }
             else
             {
-                serviceLocation = Path.GetDirectoryName(serviceLocation) + "/";
+                _serviceLocation = Path.GetDirectoryName(_serviceLocation) + "/";
             }
             
-            LogEvent("serviceLocation:'" + serviceLocation + "'");
+            LogEvent("serviceLocation:'" + _serviceLocation + "'");
 
-            return serviceLocation;
+            return _serviceLocation;
         }
 
         #region _caseRetrived
@@ -221,7 +223,7 @@ namespace MicrotingService
             try
             {
 
-                foreach (Lazy<ISdkEventHandler> i in eventHandlers)
+                foreach (Lazy<ISdkEventHandler> i in _eventHandlers)
                 {
                     LogEvent("Trying to send event caseRetrieved to plugin : " + i.Value.GetType().ToString());
                     i.Value.eFormRetrived(sender, args);
@@ -241,7 +243,7 @@ namespace MicrotingService
             try
             {
 
-                foreach (Lazy<ISdkEventHandler> i in eventHandlers)
+                foreach (Lazy<ISdkEventHandler> i in _eventHandlers)
                 {
                     LogEvent("Trying to send event _caseCompleted to plugin : " + i.Value.GetType().ToString());
                     i.Value.CaseCompleted(sender, args);
