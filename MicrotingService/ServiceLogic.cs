@@ -261,7 +261,7 @@ namespace MicrotingService
         private void _caseNoFound(object sender, EventArgs args)
         {
 
-            Note_Dto trigger = (Note_Dto)sender;            
+            NoteDto trigger = (NoteDto)sender;            
         }
         #endregion
 
