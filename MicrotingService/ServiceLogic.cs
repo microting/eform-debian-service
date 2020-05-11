@@ -135,6 +135,7 @@ namespace MicrotingService
                         _sdkCore.HandleCaseRetrived += _caseRetrived;
                         _sdkCore.HandleCaseCompleted += _caseCompleted;
                         _sdkCore.HandleNotificationNotFound += _caseCompleted;
+                        _sdkCore.HandleeFormProcessedByServer += _eFormProcessedByServer;
                         LogEvent("Core exception events disconnected (if needed)");
                     }
                     catch { }
@@ -236,7 +237,7 @@ namespace MicrotingService
         }
         #endregion
 
-        #region _caseCreated
+        #region _caseCompleted
         private void _caseCompleted(object sender, EventArgs args)
         {
 
@@ -247,6 +248,27 @@ namespace MicrotingService
                 {
                     LogEvent("Trying to send event _caseCompleted to plugin : " + i.Value.GetType().ToString());
                     i.Value.CaseCompleted(sender, args);
+                }
+            }
+            catch (Exception e)
+            {
+                LogException("_caseCompleted got exception : " + e.Message);
+            }
+
+        }
+        #endregion
+
+        #region _eFormProcessedByServer
+        private void _eFormProcessedByServer(object sender, EventArgs args)
+        {
+
+            try
+            {
+
+                foreach (Lazy<ISdkEventHandler> i in _eventHandlers)
+                {
+                    LogEvent("Trying to send event _caseCompleted to plugin : " + i.Value.GetType().ToString());
+                    i.Value.eFormProcessed(sender, args);
                 }
             }
             catch (Exception e)
