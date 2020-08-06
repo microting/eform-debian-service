@@ -25,7 +25,7 @@ namespace MicrotingService
         private readonly eFormCore.Core _sdkCore;
 #pragma warning restore 649
 
-        [ImportMany] 
+        [ImportMany(typeof(ISdkEventHandler), AllowRecomposition = true)] 
         private IEnumerable<Lazy<ISdkEventHandler>> _eventHandlers;
         #endregion
 
@@ -52,17 +52,15 @@ namespace MicrotingService
                         foreach (string dir in Directory.GetDirectories(path))
                         {
                             LogEvent("Loading Plugin : " + dir);
-                            if (Directory.Exists(Path.Combine(dir, "netcoreapp2.2")))
+                            if (Directory.Exists(Path.Combine(dir, "netcoreapp3.1")))
                             {
-                                LogEvent("Loading Plugin : " + Path.Combine(dir, "netcoreapp2.2"));
-                                catalog.Catalogs.Add(new DirectoryCatalog(Path.Combine(dir, "netcoreapp2.2")));
+                                LogEvent("Loading Plugin : " + Path.Combine(dir, "netcoreapp3.1"));
+                                catalog.Catalogs.Add(new DirectoryCatalog(Path.Combine(dir, "netcoreapp3.1")));
                             } else
                             {
                                 LogEvent("Loading Plugin : " + dir);
                                 catalog.Catalogs.Add(new DirectoryCatalog(dir));
                             }
-                            
-
                         }
                     } catch (Exception e) {
                         LogException("Something went wrong in loading plugins.");
