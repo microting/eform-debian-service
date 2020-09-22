@@ -51,7 +51,6 @@ namespace MicrotingService
                         LogEvent("Path for plugins is : " + path);
                         foreach (string dir in Directory.GetDirectories(path))
                         {
-                            LogEvent("Loading Plugin : " + dir);
                             if (Directory.Exists(Path.Combine(dir, "netcoreapp3.1")))
                             {
                                 LogEvent("Loading Plugin : " + Path.Combine(dir, "netcoreapp3.1"));
