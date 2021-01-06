@@ -27,7 +27,7 @@
             <PackageReference Include="System.ComponentModel.Composition" Version="4.7.0" />
             <PackageReference Include="System.ComponentModel.EventBasedAsync" Version="4.3.0" />
             <PackageReference Include="System.Composition" Version="1.4.1" />
-            <PackageReference Include="System.Composition.Hosting" Version="1.4.1" />
+            <PackageReference Include="System.Composition.Hosting" Version="5.0.0" />
             <PackageReference Include="System.Management" Version="4.7.0" />
             <PackageReference Include="System.Private.ServiceModel" Version="4.7.0" />
             <PackageReference Include="System.Security.Cryptography.Xml" Version="4.7.0" />
