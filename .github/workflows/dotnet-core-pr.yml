@@ -1,7 +1,7 @@
 name: .NET Core
 
 on:
-  push:
+  pull_request:
     branches: [ master,stable ]
 
 jobs:
@@ -21,12 +21,3 @@ jobs:
       run: dotnet build --configuration Release --no-restore
     - name: Test
       run: dotnet test --no-restore --verbosity normal
-    - name: Notify slack fail
-      if: ${{ failure() }}
-      env:
-        SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-      uses: voxmedia/github-action-slack-notify-build@v1
-      with:
-        channel_id: C01JNH4M10R
-        status: ${{matrix.test}} FAILED
-        color: danger
