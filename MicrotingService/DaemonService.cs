@@ -45,7 +45,7 @@ namespace MicrotingService
                                 @"Server=localhost;port=3306;Database=MicrotingOdense;user=root;Convert Zero Datetime=true;SslMode=none;";
                         if (serverConnectionString == "")
                             serverConnectionString =
-                                @"Server=localhost;port=3306;Database=420_SDK;user=root;Convert Zero Datetime=true;SslMode=none;";
+                                @"Server=localhost;port=3306;Database=420_SDK;user=root;password=secretpassword;Convert Zero Datetime=true;SslMode=none;";
                     }
                     else
                     {
