@@ -1,6 +1,7 @@
 # eform-debian-service
-
-![.NET Core](https://github.com/microting/eform-debian-service/workflows/.NET%20Core/badge.svg)
+[![.NET Core](https://github.com/microting/eform-debian-service/actions/workflows/dotnet-core-master.yml/badge.svg)](https://github.com/microting/eform-debian-service/actions/workflows/dotnet-core-master.yml)
+[![Maintainability](https://api.codeclimate.com/v1/badges/be6f8f0572bcc672f3d5/maintainability)](https://codeclimate.com/github/microting/eform-debian-service/maintainability)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/6621de3109a04869b2bbfc0dedd5691d)](https://www.codacy.com/gh/microting/eform-debian-service/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=microting/eform-debian-service&amp;utm_campaign=Badge_Grade)
 
 ## NOTICE! this is not a standalone project and needs to be used with eForm Angular Frontend.
 
@@ -38,7 +39,7 @@ This project has adopted the [Microting Open Source Code of Conduct](https://www
 
 The MIT License (MIT)
 
-Copyright (c) 2007-2019 Microting A/S
+Copyright (c) 2007-2021 Microting A/S
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
