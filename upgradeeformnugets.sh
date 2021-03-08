@@ -2,6 +2,7 @@
 
 GIT_STATUS=`git status | grep "nothing to commit, working tree clean" | wc -l`
 if (( "$GIT_STATUS" > 0 )); then
+	git checkout master
 	git pull
 	cd MicrotingService
   CURRENT_NUMBER_OF_COMMITS=`git log --oneline | wc -l`
@@ -58,6 +59,9 @@ if (( "$GIT_STATUS" > 0 )); then
 		github_changelog_generator -u microting -p $REPOSITORY -t $CHANGELOG_GITHUB_TOKEN
 		git add CHANGELOG.md
 		git commit -m "Updating changelog"
+		git push
+		git checkout stable
+		git merge master
 		git push
 	else
 		echo "nothing to do, everything is up to date."
