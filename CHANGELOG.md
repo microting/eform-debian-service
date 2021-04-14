@@ -1,5 +1,13 @@
 # Changelog
 
+## [v2.0.82](https://github.com/microting/eform-debian-service/tree/v2.0.82) (2021-04-14)
+
+[Full Changelog](https://github.com/microting/eform-debian-service/compare/v2.0.81...v2.0.82)
+
+**Implemented enhancements:**
+
+- Bump Microting.eForm from 4.4.31 to 4.4.33 [\#46](https://github.com/microting/eform-debian-service/issues/46)
+
 ## [v2.0.81](https://github.com/microting/eform-debian-service/tree/v2.0.81) (2021-04-14)
 
 [Full Changelog](https://github.com/microting/eform-debian-service/compare/v2.0.80...v2.0.81)
