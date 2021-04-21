@@ -8,8 +8,13 @@ using System.ComponentModel.Composition.Hosting;
 using System.ComponentModel.Composition;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Threading;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Storage;
 using Microting.eForm;
 using Microting.eForm.Dto;
+using Microting.eForm.Infrastructure;
+using Microting.eForm.Infrastructure.Helpers;
 using Microting.WindowsService.BasePn;
 
 namespace MicrotingService
@@ -20,12 +25,12 @@ namespace MicrotingService
 
         Tools t = new Tools();
         private string _serviceLocation;
-        
+
 #pragma warning disable 649
         private readonly eFormCore.Core _sdkCore;
 #pragma warning restore 649
 
-        [ImportMany(typeof(ISdkEventHandler), AllowRecomposition = true)] 
+        [ImportMany(typeof(ISdkEventHandler), AllowRecomposition = true)]
         private IEnumerable<Lazy<ISdkEventHandler>> _eventHandlers;
         #endregion
 
@@ -143,9 +148,19 @@ namespace MicrotingService
 
                     LogEvent("sdkSqlCoreStr, " + sdkSqlCoreStr);
 
+                    DbContextHelper dbContextHelper = new DbContextHelper(sdkSqlCoreStr);
+
+                    var dbContext = dbContextHelper.GetDbContext();
+
+                    while (!dbContext.Database.CanConnect())
+                    {
+                        LogEvent($"Unable to connect to database (sleeping 5 minutes), using {sdkSqlCoreStr}");
+                        Thread.Sleep(300000);
+                    }
                     _sdkCore.Start(sdkSqlCoreStr);
+
                     LogEvent("SDK Core started");
-                    #endregion                  
+                    #endregion
                 }
                 LogEvent("Service Start completed");
             }
@@ -209,7 +224,7 @@ namespace MicrotingService
             {
                 _serviceLocation = Path.GetDirectoryName(_serviceLocation) + "/";
             }
-            
+
             LogEvent("serviceLocation:'" + _serviceLocation + "'");
 
             return _serviceLocation;
@@ -280,7 +295,7 @@ namespace MicrotingService
         private void _caseNoFound(object sender, EventArgs args)
         {
 
-            NoteDto trigger = (NoteDto)sender;            
+            NoteDto trigger = (NoteDto)sender;
         }
         #endregion
 
@@ -309,14 +324,14 @@ namespace MicrotingService
 
         private void CoreEventException(object sender, EventArgs args)
         {
-            //DOSOMETHING: changed to fit your wishes and needs 
+            //DOSOMETHING: changed to fit your wishes and needs
             Exception ex = (Exception)sender;
         }
 
         private void LogEvent(string appendText)
         {
             try
-            {                
+            {
                 var oldColor = Console.ForegroundColor;
                 Console.ForegroundColor = ConsoleColor.Gray;
                 Console.WriteLine("[DBG] " + appendText);
