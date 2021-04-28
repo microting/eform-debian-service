@@ -24,7 +24,7 @@
             <PackageReference Include="Microting.WindowsService.BasePn" Version="2.0.0" />
             <PackageReference Include="System.ComponentModel" Version="4.3.0" />
             <PackageReference Include="System.ComponentModel.Annotations" Version="4.7.0" />
-            <PackageReference Include="System.ComponentModel.Composition" Version="4.7.0" />
+            <PackageReference Include="System.ComponentModel.Composition" Version="5.0.0" />
             <PackageReference Include="System.ComponentModel.EventBasedAsync" Version="4.3.0" />
             <PackageReference Include="System.Composition" Version="1.4.1" />
             <PackageReference Include="System.Composition.Hosting" Version="1.4.1" />
