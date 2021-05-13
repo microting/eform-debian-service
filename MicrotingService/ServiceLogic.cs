@@ -58,8 +58,8 @@ namespace MicrotingService
                         {
                             if (Directory.Exists(Path.Combine(dir, "netcoreapp3.1")))
                             {
-                                LogEvent("Loading Plugin : " + Path.Combine(dir, "netcoreapp3.1"));
-                                catalog.Catalogs.Add(new DirectoryCatalog(Path.Combine(dir, "netcoreapp3.1")));
+                                LogEvent("Loading Plugin : " + Path.Combine(dir, "net5.0"));
+                                catalog.Catalogs.Add(new DirectoryCatalog(Path.Combine(dir, "net5.0")));
                             } else
                             {
                                 LogEvent("Loading Plugin : " + dir);
