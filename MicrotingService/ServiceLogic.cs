@@ -136,7 +136,7 @@ namespace MicrotingService
                         _sdkCore.HandleEventException -= CoreEventException;
                         _sdkCore.HandleCaseRetrived += _caseRetrived;
                         _sdkCore.HandleCaseCompleted += _caseCompleted;
-                        _sdkCore.HandleNotificationNotFound += _caseCompleted;
+                        //_sdkCore.HandleNotificationNotFound += _caseCompleted;
                         _sdkCore.HandleeFormProcessedByServer += _eFormProcessedByServer;
                         LogEvent("Core exception events disconnected (if needed)");
                     }
@@ -235,11 +235,17 @@ namespace MicrotingService
         {
             try
             {
-
                 foreach (Lazy<ISdkEventHandler> i in _eventHandlers)
                 {
-                    LogEvent("Trying to send event caseRetrieved to plugin : " + i.Value.GetType().ToString());
-                    i.Value.eFormRetrived(sender, args);
+                    try
+                    {
+                        LogEvent("Trying to send event caseRetrieved to plugin : " + i.Value.GetType().ToString());
+                        i.Value.eFormRetrived(sender, args);
+                    }
+                    catch (Exception exception)
+                    {
+                        LogException("_caseCompleted got exception : " + exception.Message);
+                    }
                 }
             }
             catch (Exception e)
@@ -258,8 +264,15 @@ namespace MicrotingService
 
                 foreach (Lazy<ISdkEventHandler> i in _eventHandlers)
                 {
-                    LogEvent("Trying to send event _caseCompleted to plugin : " + i.Value.GetType().ToString());
-                    i.Value.CaseCompleted(sender, args);
+                    try
+                    {
+                        LogEvent("Trying to send event _caseCompleted to plugin : " + i.Value.GetType().ToString());
+                        i.Value.CaseCompleted(sender, args);
+                    }
+                    catch (Exception exception)
+                    {
+                        LogException("_caseCompleted got exception : " + exception.Message);
+                    }
                 }
             }
             catch (Exception e)
@@ -279,8 +292,15 @@ namespace MicrotingService
 
                 foreach (Lazy<ISdkEventHandler> i in _eventHandlers)
                 {
-                    LogEvent("Trying to send event _caseCompleted to plugin : " + i.Value.GetType().ToString());
-                    i.Value.eFormProcessed(sender, args);
+                    try
+                    {
+                        LogEvent("Trying to send event _caseCompleted to plugin : " + i.Value.GetType().ToString());
+                        i.Value.eFormProcessed(sender, args);
+                    }
+                    catch (Exception exception)
+                    {
+                        LogException("_caseCompleted got exception : " + exception.Message);
+                    }
                 }
             }
             catch (Exception e)
