@@ -1,5 +1,19 @@
 # Changelog
 
+## [v2.1.23](https://github.com/microting/eform-debian-service/tree/v2.1.23) (2021-06-14)
+
+[Full Changelog](https://github.com/microting/eform-debian-service/compare/v2.1.22...v2.1.23)
+
+**Implemented enhancements:**
+
+- Bump Microting.eForm from 5.2.9 to 5.2.11 [\#84](https://github.com/microting/eform-debian-service/issues/84)
+
+**Merged pull requests:**
+
+- Bump Microsoft.Extensions.Identity.Stores from 5.0.6 to 5.0.7 [\#81](https://github.com/microting/eform-debian-service/pull/81) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation from 5.0.6 to 5.0.7 [\#80](https://github.com/microting/eform-debian-service/pull/80) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump Microsoft.Extensions.Localization.Abstractions from 5.0.6 to 5.0.7 [\#79](https://github.com/microting/eform-debian-service/pull/79) ([dependabot[bot]](https://github.com/apps/dependabot))
+
 ## [v2.1.22](https://github.com/microting/eform-debian-service/tree/v2.1.22) (2021-06-09)
 
 [Full Changelog](https://github.com/microting/eform-debian-service/compare/v2.1.21...v2.1.22)
