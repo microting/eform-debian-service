@@ -1,5 +1,13 @@
 # Changelog
 
+## [v2.1.31](https://github.com/microting/eform-debian-service/tree/v2.1.31) (2021-08-05)
+
+[Full Changelog](https://github.com/microting/eform-debian-service/compare/v2.1.30...v2.1.31)
+
+**Implemented enhancements:**
+
+- Bump Microting.eForm from 5.2.21 to 5.2.22 [\#97](https://github.com/microting/eform-debian-service/issues/97)
+
 ## [v2.1.30](https://github.com/microting/eform-debian-service/tree/v2.1.30) (2021-07-31)
 
 [Full Changelog](https://github.com/microting/eform-debian-service/compare/v2.1.29...v2.1.30)
@@ -366,6 +374,10 @@
 
 [Full Changelog](https://github.com/microting/eform-debian-service/compare/v2.0.74...v2.0.75)
 
+**Implemented enhancements:**
+
+- Bump Microting.eForm from 4.4.21 to 4.4.24 [\#39](https://github.com/microting/eform-debian-service/issues/39)
+
 ## [v2.0.74](https://github.com/microting/eform-debian-service/tree/v2.0.74) (2021-04-07)
 
 [Full Changelog](https://github.com/microting/eform-debian-service/compare/v2.0.73...v2.0.74)
@@ -436,7 +448,6 @@
 
 **Implemented enhancements:**
 
-- Bump Microting.eForm from 4.4.21 to 4.4.24 [\#39](https://github.com/microting/eform-debian-service/issues/39)
 - Bump Microting.eForm from 4.4.8 to 4.4.9 [\#28](https://github.com/microting/eform-debian-service/issues/28)
 
 ## [v2.0.65](https://github.com/microting/eform-debian-service/tree/v2.0.65) (2021-03-16)
