@@ -88,6 +88,7 @@ namespace MicrotingService
             catch (Exception ex)
             {
                 LogException(t.PrintException("Fatal Exception", ex));
+                throw;
             }
         }
 
@@ -115,6 +116,7 @@ namespace MicrotingService
             catch (Exception e)
             {
                 LogException("Start got exception : " + e.Message);
+                throw;
             }
             #endregion
 
@@ -167,7 +169,7 @@ namespace MicrotingService
             catch (Exception ex)
             {
                 LogException(t.PrintException("Fatal Exception", ex));
-				throw ex;
+				throw;
             }
         }
 
