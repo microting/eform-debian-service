@@ -30,7 +30,7 @@
             <PackageReference Include="System.Composition.Hosting" Version="5.0.1" />
             <PackageReference Include="System.Management" Version="5.0.0" />
             <PackageReference Include="System.Private.ServiceModel" Version="4.8.1" />
-            <PackageReference Include="System.Security.Cryptography.Xml" Version="5.0.0" />
+            <PackageReference Include="System.Security.Cryptography.Xml" Version="6.0.0" />
       </ItemGroup>
 
 </Project>
