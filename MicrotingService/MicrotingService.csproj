@@ -7,7 +7,7 @@
 
       <PropertyGroup>
             <OutputType>Exe</OutputType>
-            <TargetFramework>net5.0</TargetFramework>
+            <TargetFramework>net6.0</TargetFramework>
       </PropertyGroup>
 
       <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -15,22 +15,22 @@
       </PropertyGroup>
 
       <ItemGroup>
-            <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="5.0.11" />
-            <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="5.0.0" />
-            <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
-            <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="5.0.11" />
-            <PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="5.0.11" />
-            <PackageReference Include="Microting.eForm" Version="5.2.57" />
+            <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="6.0.0" />
+            <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="6.0.0" />
+            <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.0" />
+            <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="6.0.0" />
+            <PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="6.0.0" />
+            <PackageReference Include="Microting.eForm" Version="5.3.2" />
             <PackageReference Include="Microting.WindowsService.BasePn" Version="2.0.0" />
             <PackageReference Include="System.ComponentModel" Version="4.3.0" />
             <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
-            <PackageReference Include="System.ComponentModel.Composition" Version="5.0.0" />
+            <PackageReference Include="System.ComponentModel.Composition" Version="6.0.0" />
             <PackageReference Include="System.ComponentModel.EventBasedAsync" Version="4.3.0" />
-            <PackageReference Include="System.Composition" Version="5.0.1" />
-            <PackageReference Include="System.Composition.Hosting" Version="5.0.1" />
-            <PackageReference Include="System.Management" Version="5.0.0" />
-            <PackageReference Include="System.Private.ServiceModel" Version="4.8.1" />
-            <PackageReference Include="System.Security.Cryptography.Xml" Version="5.0.0" />
+            <PackageReference Include="System.Composition" Version="6.0.0" />
+            <PackageReference Include="System.Composition.Hosting" Version="6.0.0" />
+            <PackageReference Include="System.Management" Version="6.0.0" />
+            <PackageReference Include="System.Private.ServiceModel" Version="4.9.0" />
+            <PackageReference Include="System.Security.Cryptography.Xml" Version="6.0.0" />
       </ItemGroup>
 
 </Project>
