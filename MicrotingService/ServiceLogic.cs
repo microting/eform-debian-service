@@ -9,6 +9,8 @@ using System.ComponentModel.Composition;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microting.eForm;
@@ -160,6 +162,7 @@ namespace MicrotingService
                         Thread.Sleep(300000);
                     }
                     _sdkCore.Start(sdkSqlCoreStr);
+                    FixDoneAt(dbContext);
 
                     LogEvent("SDK Core started");
                     #endregion
@@ -376,6 +379,17 @@ namespace MicrotingService
             catch
             {
 
+            }
+        }
+
+        private static void FixDoneAt(MicrotingDbContext dbContext)
+        {
+            var cases = dbContext.Cases.Where(x => x.DoneAtUserModifiable == null).ToList();
+
+            foreach (Microting.eForm.Infrastructure.Data.Entities.Case theCase in cases)
+            {
+                theCase.DoneAtUserModifiable = theCase.DoneAt;
+                theCase.Update(dbContext).GetAwaiter().GetResult();
             }
         }
         #endregion
