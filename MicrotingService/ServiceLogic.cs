@@ -6,16 +6,23 @@ using System.Diagnostics;
 using System.Security;
 using System.ComponentModel.Composition.Hosting;
 using System.ComponentModel.Composition;
+using System.Net;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
+using Amazon;
+using Amazon.S3;
+using Amazon.S3.Model;
+using eFormCore;
+using ImageMagick;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microting.eForm;
 using Microting.eForm.Dto;
 using Microting.eForm.Infrastructure;
+using Microting.eForm.Infrastructure.Data.Entities;
 using Microting.eForm.Infrastructure.Helpers;
 using Microting.WindowsService.BasePn;
 
@@ -163,6 +170,7 @@ namespace MicrotingService
                     }
                     _sdkCore.Start(sdkSqlCoreStr);
                     FixDoneAt(dbContext);
+                    CheckUploadedDataIntegrity(dbContext, _sdkCore);
 
                     LogEvent("SDK Core started");
                     #endregion
@@ -367,6 +375,128 @@ namespace MicrotingService
             {
                 theCase.DoneAtUserModifiable = theCase.DoneAt;
                 theCase.Update(dbContext).GetAwaiter().GetResult();
+            }
+        }
+
+        private static void CheckUploadedDataIntegrity(MicrotingDbContext dbContext, Core core)
+        {
+            AmazonS3Client s3Client;
+            string s3AccessKeyId = dbContext.Settings.Single(x => x.Name == Settings.s3AccessKeyId.ToString()).Value;
+            string s3SecretAccessKey = dbContext.Settings.Single(x => x.Name == Settings.s3SecrectAccessKey.ToString()).Value;
+            string s3Endpoint = dbContext.Settings.Single(x => x.Name == Settings.s3Endpoint.ToString()).Value;
+            string s3BucktName = dbContext.Settings.Single(x => x.Name == Settings.s3BucketName.ToString()).Value;
+            string customerNo = dbContext.Settings.Single(x => x.Name == Settings.customerNo.ToString()).Value;
+            string comAddressApi = dbContext.Settings.Single(x => x.Name == Settings.comAddressApi.ToString()).Value;
+            string token = dbContext.Settings.Single(x => x.Name == Settings.token.ToString()).Value;
+            string comOrganizationId = dbContext.Settings.Single(x => x.Name == Settings.comOrganizationId.ToString()).Value;
+            string fileLocationPicture = Path.Combine(Path.GetTempPath(), "pictures");
+            Directory.CreateDirectory(fileLocationPicture);
+
+            if (s3Endpoint.Contains("https"))
+            {
+                s3Client = new AmazonS3Client(s3AccessKeyId, s3SecretAccessKey, new AmazonS3Config
+                {
+                    ServiceURL = s3Endpoint,
+                });
+            }
+            else
+            {
+                s3Client = new AmazonS3Client(s3AccessKeyId, s3SecretAccessKey, RegionEndpoint.EUCentral1);
+
+            }
+            var uploadedDatas = dbContext.UploadedDatas.Where(x => x.FileLocation == "/tmp/pictures").ToList();
+
+            foreach (UploadedData ud in uploadedDatas)
+            {
+
+                GetObjectMetadataRequest request = new GetObjectMetadataRequest
+                {
+                    BucketName = $"{s3BucktName}/{customerNo}",
+                    Key = ud.FileName
+                };
+                try
+                {
+                    var result = s3Client.GetObjectMetadataAsync(request).ConfigureAwait(false).GetAwaiter().GetResult();
+                }
+                catch (AmazonS3Exception s3Exception)
+                {
+                    if (s3Exception.ErrorCode == "Forbidden")
+                    {
+                        Console.WriteLine($"Trying to fetch {ud.FileName} from main server and put it to s3");
+                        // /gwt/inspection_app/integration/564?token=5cbee2fccc560577a123fa8cc3c53c59&protocol=6&site_id=14904&download=true&delete=false&last_check_id=0");
+                        string urlStr = $"{comAddressApi}/app_files/inspection_app/uploads/{comOrganizationId}/{ud.Checksum}{ud.Extension}";
+                        using var client = new WebClient();
+                        try
+                        {
+                            Console.WriteLine($"Downloading file to {fileLocationPicture}/{ud.FileName}");
+                            client.DownloadFile(urlStr, Path.Combine(fileLocationPicture, ud.FileName));
+                            string filePath = Path.Combine(fileLocationPicture, ud.FileName);
+                        if (File.Exists(filePath))
+                        {
+                            Console.WriteLine($"File exists at path {filePath}");
+
+                            // Generate thumbnail and docx/pdf friendly file sizes
+                            if (ud.FileName.Contains("png") || ud.FileName.Contains("jpg") || ud.FileName.Contains("jpeg"))
+                            {
+                                string smallFilename = ud.Id + "_300_" + ud.Checksum + ud.Extension;
+                                string bigFilename = ud.Id + "_700_" + ud.Checksum + ud.Extension;
+                                File.Copy(filePath, Path.Combine(fileLocationPicture, smallFilename));
+                                File.Copy(filePath, Path.Combine(fileLocationPicture, bigFilename));
+                                string filePathResized = Path.Combine(fileLocationPicture, smallFilename);
+                                using (var image = new MagickImage(filePathResized))
+                                {
+                                    decimal currentRation = image.Height / (decimal) image.Width;
+                                    int newWidth = 300;
+                                    int newHeight = (int) Math.Round((currentRation * newWidth));
+
+                                    image.Resize(newWidth, newHeight);
+                                    image.Crop(newWidth, newHeight);
+                                    image.Write(filePathResized);
+                                    image.Dispose();
+                                    core.PutFileToStorageSystem(Path.Combine(fileLocationPicture, smallFilename),
+                                        smallFilename).ConfigureAwait(false).GetAwaiter().GetResult();
+                                }
+
+                                // Cleanup locally, so we don't fill up disc space
+                                File.Delete(filePathResized);
+                                filePathResized = Path.Combine(fileLocationPicture, bigFilename);
+                                using (var image = new MagickImage(filePathResized))
+                                {
+                                    decimal currentRation = image.Height / (decimal) image.Width;
+                                    int newWidth = 700;
+                                    int newHeight = (int) Math.Round((currentRation * newWidth));
+
+                                    image.Resize(newWidth, newHeight);
+                                    image.Crop(newWidth, newHeight);
+                                    image.Write(filePathResized);
+                                    image.Dispose();
+                                    core.PutFileToStorageSystem(Path.Combine(fileLocationPicture, bigFilename),
+                                        bigFilename).ConfigureAwait(false).GetAwaiter().GetResult();
+                                }
+
+                                // Cleanup locally, so we don't fill up disc space
+                                File.Delete(filePathResized);
+                            }
+                            core.PutFileToStorageSystem(filePath, ud.FileName).ConfigureAwait(false).GetAwaiter().GetResult();
+
+                            // Cleanup locally, so we don't fill up disc space
+                            File.Delete(filePath);
+                        }
+                        else
+                        {
+                            Console.WriteLine($"File could not be found at filepath {filePath}");
+                        }
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine("We got an error " + ex.Message);
+                            throw new Exception("Downloading and creating fil locally failed.", ex);
+                        }
+
+                        //dbContext.UploadedDatas.Remove(ud);
+                        //dbContext.SaveChanges();
+                    }
+                }
             }
         }
         #endregion
