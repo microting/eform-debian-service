@@ -404,7 +404,7 @@ namespace MicrotingService
                 s3Client = new AmazonS3Client(s3AccessKeyId, s3SecretAccessKey, RegionEndpoint.EUCentral1);
 
             }
-            var uploadedDatas = dbContext.UploadedDatas.Where(x => x.FileLocation == "/tmp/pictures").ToList();
+            var uploadedDatas = dbContext.UploadedDatas.Where(x => x.FileLocation == "/tmp/pictures" || x.FileLocation.Contains("https")).ToList();
 
             foreach (UploadedData ud in uploadedDatas)
             {
@@ -414,6 +414,10 @@ namespace MicrotingService
                     BucketName = $"{s3BucktName}/{customerNo}",
                     Key = ud.FileName
                 };
+                if (ud.FileName == null)
+                {
+                    core.DownloadUploadedData(ud.Id).GetAwaiter().GetResult();
+                }
                 try
                 {
                     var result = s3Client.GetObjectMetadataAsync(request).ConfigureAwait(false).GetAwaiter().GetResult();
@@ -422,79 +426,7 @@ namespace MicrotingService
                 {
                     if (s3Exception.ErrorCode == "Forbidden")
                     {
-                        Console.WriteLine($"Trying to fetch {ud.FileName} from main server and put it to s3");
-                        // /gwt/inspection_app/integration/564?token=5cbee2fccc560577a123fa8cc3c53c59&protocol=6&site_id=14904&download=true&delete=false&last_check_id=0");
-                        string urlStr = $"{comAddressApi}/app_files/inspection_app/uploads/{comOrganizationId}/{ud.Checksum}{ud.Extension}";
-                        using var client = new WebClient();
-                        try
-                        {
-                            Console.WriteLine($"Downloading file to {fileLocationPicture}/{ud.FileName}");
-                            client.DownloadFile(urlStr, Path.Combine(fileLocationPicture, ud.FileName));
-                            string filePath = Path.Combine(fileLocationPicture, ud.FileName);
-                        if (File.Exists(filePath))
-                        {
-                            Console.WriteLine($"File exists at path {filePath}");
-
-                            // Generate thumbnail and docx/pdf friendly file sizes
-                            if (ud.FileName.Contains("png") || ud.FileName.Contains("jpg") || ud.FileName.Contains("jpeg"))
-                            {
-                                string smallFilename = ud.Id + "_300_" + ud.Checksum + ud.Extension;
-                                string bigFilename = ud.Id + "_700_" + ud.Checksum + ud.Extension;
-                                File.Copy(filePath, Path.Combine(fileLocationPicture, smallFilename));
-                                File.Copy(filePath, Path.Combine(fileLocationPicture, bigFilename));
-                                string filePathResized = Path.Combine(fileLocationPicture, smallFilename);
-                                using (var image = new MagickImage(filePathResized))
-                                {
-                                    decimal currentRation = image.Height / (decimal) image.Width;
-                                    int newWidth = 300;
-                                    int newHeight = (int) Math.Round((currentRation * newWidth));
-
-                                    image.Resize(newWidth, newHeight);
-                                    image.Crop(newWidth, newHeight);
-                                    image.Write(filePathResized);
-                                    image.Dispose();
-                                    core.PutFileToStorageSystem(Path.Combine(fileLocationPicture, smallFilename),
-                                        smallFilename).ConfigureAwait(false).GetAwaiter().GetResult();
-                                }
-
-                                // Cleanup locally, so we don't fill up disc space
-                                File.Delete(filePathResized);
-                                filePathResized = Path.Combine(fileLocationPicture, bigFilename);
-                                using (var image = new MagickImage(filePathResized))
-                                {
-                                    decimal currentRation = image.Height / (decimal) image.Width;
-                                    int newWidth = 700;
-                                    int newHeight = (int) Math.Round((currentRation * newWidth));
-
-                                    image.Resize(newWidth, newHeight);
-                                    image.Crop(newWidth, newHeight);
-                                    image.Write(filePathResized);
-                                    image.Dispose();
-                                    core.PutFileToStorageSystem(Path.Combine(fileLocationPicture, bigFilename),
-                                        bigFilename).ConfigureAwait(false).GetAwaiter().GetResult();
-                                }
-
-                                // Cleanup locally, so we don't fill up disc space
-                                File.Delete(filePathResized);
-                            }
-                            core.PutFileToStorageSystem(filePath, ud.FileName).ConfigureAwait(false).GetAwaiter().GetResult();
-
-                            // Cleanup locally, so we don't fill up disc space
-                            File.Delete(filePath);
-                        }
-                        else
-                        {
-                            Console.WriteLine($"File could not be found at filepath {filePath}");
-                        }
-                        }
-                        catch (Exception ex)
-                        {
-                            Console.WriteLine("We got an error " + ex.Message);
-                            throw new Exception("Downloading and creating fil locally failed.", ex);
-                        }
-
-                        //dbContext.UploadedDatas.Remove(ud);
-                        //dbContext.SaveChanges();
+                        core.DownloadUploadedData(ud.Id).GetAwaiter().GetResult();
                     }
                 }
             }
