@@ -418,15 +418,18 @@ namespace MicrotingService
                 {
                     core.DownloadUploadedData(ud.Id).GetAwaiter().GetResult();
                 }
-                try
+                else
                 {
-                    var result = s3Client.GetObjectMetadataAsync(request).ConfigureAwait(false).GetAwaiter().GetResult();
-                }
-                catch (AmazonS3Exception s3Exception)
-                {
-                    if (s3Exception.ErrorCode == "Forbidden")
+                    try
                     {
-                        core.DownloadUploadedData(ud.Id).GetAwaiter().GetResult();
+                        var result = s3Client.GetObjectMetadataAsync(request).ConfigureAwait(false).GetAwaiter().GetResult();
+                    }
+                    catch (AmazonS3Exception s3Exception)
+                    {
+                        if (s3Exception.ErrorCode == "Forbidden")
+                        {
+                            core.DownloadUploadedData(ud.Id).GetAwaiter().GetResult();
+                        }
                     }
                 }
             }
