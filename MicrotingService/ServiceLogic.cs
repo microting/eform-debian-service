@@ -404,7 +404,7 @@ namespace MicrotingService
                 s3Client = new AmazonS3Client(s3AccessKeyId, s3SecretAccessKey, RegionEndpoint.EUCentral1);
 
             }
-            var uploadedDatas = dbContext.UploadedDatas.Where(x => x.FileLocation == "/tmp/pictures" || x.FileLocation.Contains("https")).ToList();
+            var uploadedDatas = dbContext.UploadedDatas.Where(x => x.FileLocation.Contains("https") && x.Local == 1).ToList();
 
             foreach (UploadedData ud in uploadedDatas)
             {
@@ -429,6 +429,9 @@ namespace MicrotingService
                         core.DownloadUploadedData(ud.Id).GetAwaiter().GetResult();
                     }
                 }
+
+                ud.Local = 0;
+                ud.Update(dbContext).GetAwaiter().GetResult();
             }
         }
         #endregion
