@@ -432,6 +432,9 @@ namespace MicrotingService
                         }
                     }
                 }
+
+                ud.Local = 0;
+                ud.Update(dbContext).GetAwaiter().GetResult();
             }
         }
         #endregion
