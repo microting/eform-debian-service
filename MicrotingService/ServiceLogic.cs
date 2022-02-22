@@ -307,7 +307,7 @@ namespace MicrotingService
                 {
                     try
                     {
-                        LogEvent("Trying to send event _caseCompleted to plugin : " + i.Value.GetType().ToString());
+                        LogEvent("Trying to send event _eFormProcessedByServer to plugin : " + i.Value.GetType().ToString());
                         i.Value.eFormProcessed(sender, args);
                     }
                     catch (Exception exception)
