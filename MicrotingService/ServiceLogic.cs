@@ -169,8 +169,6 @@ namespace MicrotingService
                         Thread.Sleep(300000);
                     }
                     _sdkCore.Start(sdkSqlCoreStr);
-                    FixDoneAt(dbContext);
-                    CheckUploadedDataIntegrity(dbContext, _sdkCore);
 
                     LogEvent("SDK Core started");
                     #endregion
