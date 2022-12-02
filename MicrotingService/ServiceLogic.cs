@@ -9,6 +9,7 @@ using System.ComponentModel.Composition;
 using System.Net;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Amazon;
@@ -65,10 +66,10 @@ namespace MicrotingService
                         LogEvent("Path for plugins is : " + path);
                         foreach (string dir in Directory.GetDirectories(path))
                         {
-                            if (Directory.Exists(Path.Combine(dir, "net6.0")))
+                            if (Directory.Exists(Path.Combine(dir, "net7.0")))
                             {
-                                LogEvent("Loading Plugin : " + Path.Combine(dir, "net6.0"));
-                                catalog.Catalogs.Add(new DirectoryCatalog(Path.Combine(dir, "net6.0")));
+                                LogEvent("Loading Plugin : " + Path.Combine(dir, "net7.0"));
+                                catalog.Catalogs.Add(new DirectoryCatalog(Path.Combine(dir, "net7.0")));
                             } else
                             {
                                 LogEvent("Loading Plugin : " + dir);
@@ -87,6 +88,28 @@ namespace MicrotingService
                     {
                         container.ComposeParts(this);
                     }
+                    catch (ReflectionTypeLoadException ex)
+                    {
+                        StringBuilder sb = new StringBuilder();
+                        foreach (Exception exSub in ex.LoaderExceptions)
+                        {
+                            sb.AppendLine(exSub.Message);
+                            FileNotFoundException exFileNotFound = exSub as FileNotFoundException;
+                            if (exFileNotFound != null)
+                            {
+                                if(!string.IsNullOrEmpty(exFileNotFound.FusionLog))
+                                {
+                                    sb.AppendLine("Fusion Log:");
+                                    sb.AppendLine(exFileNotFound.FusionLog);
+                                }
+                            }
+                            sb.AppendLine();
+                        }
+                        string errorMessage = sb.ToString();
+                        LogException(errorMessage);
+                        //Display or log the error based on your application.
+                    }
+
                     catch (CompositionException compositionException)
                     {
                         LogException(compositionException.ToString());
