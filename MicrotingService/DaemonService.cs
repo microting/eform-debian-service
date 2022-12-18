@@ -28,7 +28,7 @@ namespace MicrotingService
                 if (!File.Exists(filePath))
                 {
                     serverConnectionString =
-                        @"Server=localhost;port=3306;Database=420_SDK;user=root;password=secretpassword;Convert Zero Datetime=true;SslMode=none;";
+                        @"Server=127.0.0.1;port=3306;Database=420_SDK;user=root;password=secretpassword;Convert Zero Datetime=true;SslMode=none;";
                 }
                 else
                 {
