@@ -15,8 +15,18 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    - name: Create docker network 🖧
+      run: docker network create --driver bridge data
+    - name: Start MariaDB
+      run: |
+        docker pull mariadb:10.8
+        docker run --name mariadbtest --network data -e MYSQL_ROOT_PASSWORD=secretpassword -p 3306 -d mariadb:10.8
+    - name: Start rabbitmq
+      run: |
+        docker pull rabbitmq:latest
+        docker run -d --hostname my-rabbit --name some-rabbit --network data -e RABBITMQ_DEFAULT_USER=admin -e RABBITMQ_DEFAULT_PASS=password rabbitmq:latest
     - name: Setup .NET Core
-      uses: actions/setup-dotnet@v1
+      uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 7.0.x
     - name: Install dependencies
@@ -28,6 +38,10 @@ jobs:
       run: dotnet build --configuration Release --no-restore
     - name: Test
       run: dotnet test --no-restore --verbosity normal
+    - name: Load DB dump
+      run: |
+        docker exec -i mariadbtest mysql -u root --password=secretpassword -e 'create database `420_SDK`'
+        docker exec -i mariadbtest mysql -u root --password=secretpassword 420_SDK < 420_SDK.sql
     - name: Set up QEMU
       uses: docker/setup-qemu-action@v1
     - name: Set up Docker Buildx
@@ -37,13 +51,23 @@ jobs:
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
-    - name: Build and push
-      id: docker_build
-      uses: docker/build-push-action@v2
-      with:
-        build-args:
-          GITVERSION=${{ steps.get_version.outputs.VERSION }}
-        push: true
-        tags: microtingas/debian-service:latest,microtingas/debian-service:${{ steps.get_version.outputs.VERSION }}
+    - name: Build the tagged Docker image
+      run: docker build . -t microtingas/debian-service:latest -t microtingas/debian-service:${{ steps.get_version.outputs.VERSION }} --build-arg GITVERSION=${{ steps.get_version.outputs.VERSION }}
+    - name: Start the newly build Docker container
+      id: docker-run
+      run: docker run --name my-container --network data microtingas/debian-service:latest "/ConnectionString=host=mariadbtest;Database=420_SDK;user=root;password=secretpassword;port=3306;Convert Zero Datetime = true;SslMode=none;" > docker_run_log 2>&1 &
+      #run: docker run --name my-container microtingas/debian-service:latest ---network data "/ConnectionString=host=mariadbtest:3306;Database=420_SDK;user=root;password=secretpassword;port=3306;Convert Zero Datetime = true;SslMode=none;" > docker_run_log
+    - name: Sleep 75 seconds for letting the container start and generate some output we can
+      run: sleep 75
+    - name: Stop the newly build Docker container
+      run: docker stop my-container
+    - name: Get standard output
+      run: cat docker_run_log
+    - name: Check correct statup
+      run: echo ::set-output name=RESULT::$(cat docker_run_log | grep "No messages for us right now!" -m 1 | wc -l)
+    - name: Push the tagged Docker image
+      run: docker push microtingas/debian-service:${{ steps.get_version.outputs.VERSION }}
+    - name: Push the latest Docker image
+      run: docker push microtingas/debian-service:latest    
     - name: Image digest
       run: echo ${{ steps.docker_build.outputs.digest }}
