@@ -62,9 +62,10 @@ jobs:
     - name: Stop the newly build Docker container
       run: docker stop my-container
     - name: Get standard output
-      run: cat docker_run_log
-    - name: Check correct statup
-      run: echo ::set-output name=RESULT::$(cat docker_run_log | grep "No messages for us right now!" -m 1 | wc -l)
+      run: |
+        cat docker_run_log
+        result=`cat docker_run_log | grep "No messages for us right now!" -m 1 | wc -l`
+        if [ $result -eq 1 ];then exit 0; fi
     - name: Push the tagged Docker image
       run: docker push microtingas/debian-service:${{ steps.get_version.outputs.VERSION }}
     - name: Push the latest Docker image
