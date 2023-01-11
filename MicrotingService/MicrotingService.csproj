@@ -19,7 +19,7 @@
             <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="7.0.1" />
             <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="7.0.0" />
             <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.0" />
-            <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="7.0.1" />
+            <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="7.0.2" />
             <PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="7.0.1" />
             <PackageReference Include="Microting.eForm" Version="7.0.8" />
             <PackageReference Include="Microting.WindowsService.BasePn" Version="2.0.0" />
