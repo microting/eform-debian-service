@@ -409,11 +409,6 @@ namespace MicrotingService
             string s3Endpoint = dbContext.Settings.Single(x => x.Name == Settings.s3Endpoint.ToString()).Value;
             string s3BucktName = dbContext.Settings.Single(x => x.Name == Settings.s3BucketName.ToString()).Value;
             string customerNo = dbContext.Settings.Single(x => x.Name == Settings.customerNo.ToString()).Value;
-            string comAddressApi = dbContext.Settings.Single(x => x.Name == Settings.comAddressApi.ToString()).Value;
-            string token = dbContext.Settings.Single(x => x.Name == Settings.token.ToString()).Value;
-            string comOrganizationId = dbContext.Settings.Single(x => x.Name == Settings.comOrganizationId.ToString()).Value;
-            string fileLocationPicture = Path.Combine(Path.GetTempPath(), "pictures");
-            Directory.CreateDirectory(fileLocationPicture);
 
             if (s3Endpoint.Contains("https"))
             {
@@ -455,9 +450,6 @@ namespace MicrotingService
                         }
                     }
                 }
-
-                ud.Local = 0;
-                ud.Update(dbContext).GetAwaiter().GetResult();
             }
         }
         #endregion
