@@ -156,25 +156,20 @@ namespace MicrotingService
             {
                 LogEvent("Service Start called");
                 {
-                    // start debugger?
-                    if (File.Exists(GetServiceLocation() + "input\\debug.txt"))
-                    {
-                        LogEvent("Debugger called");
-                        System.Diagnostics.Debugger.Launch();
-                    }
-
                     #region start SDK core
                     #region event connecting
+
                     try
                     {
                         _sdkCore.HandleEventException -= CoreEventException;
                         _sdkCore.HandleCaseRetrived += _caseRetrived;
                         _sdkCore.HandleCaseCompleted += _caseCompleted;
-                        //_sdkCore.HandleNotificationNotFound += _caseCompleted;
                         _sdkCore.HandleeFormProcessedByServer += _eFormProcessedByServer;
-                        LogEvent("Core exception events disconnected (if needed)");
                     }
-                    catch { }
+                    catch (Exception exception)
+                    {
+                        Console.WriteLine($"We got the following exception while trying to connect to events: {exception.Message}");
+                    }
 
                     _sdkCore.HandleEventException += CoreEventException;
                     LogEvent("Core exception events connected");
@@ -191,7 +186,7 @@ namespace MicrotingService
                         LogEvent($"Unable to connect to database (sleeping 5 minutes), using {sdkSqlCoreStr}");
                         Thread.Sleep(300000);
                     }
-                    _sdkCore.Start(sdkSqlCoreStr);
+                    _sdkCore.Start(sdkSqlCoreStr).GetAwaiter().GetResult();
 
                     CheckUploadedDataIntegrity(dbContext, _sdkCore);
 
@@ -275,12 +270,12 @@ namespace MicrotingService
                 {
                     try
                     {
-                        LogEvent("Trying to send event caseRetrieved to plugin : " + i.Value.GetType().ToString());
+                        LogEvent("Trying to send event caseRetrieved to plugin : " + i.Value.GetType());
                         i.Value.eFormRetrived(sender, args);
                     }
                     catch (Exception exception)
                     {
-                        LogException("_caseCompleted got exception : " + exception.Message);
+                        LogException("_caseRetrived got exception : " + exception.Message);
                     }
                 }
             }
@@ -302,7 +297,7 @@ namespace MicrotingService
                 {
                     try
                     {
-                        LogEvent("Trying to send event _caseCompleted to plugin : " + i.Value.GetType().ToString());
+                        LogEvent("Trying to send event _caseCompleted to plugin : " + i.Value.GetType());
                         i.Value.CaseCompleted(sender, args);
                     }
                     catch (Exception exception)
@@ -330,18 +325,18 @@ namespace MicrotingService
                 {
                     try
                     {
-                        LogEvent("Trying to send event _eFormProcessedByServer to plugin : " + i.Value.GetType().ToString());
+                        LogEvent("Trying to send event _eFormProcessedByServer to plugin : " + i.Value.GetType());
                         i.Value.eFormProcessed(sender, args);
                     }
                     catch (Exception exception)
                     {
-                        LogException("_caseCompleted got exception : " + exception.Message);
+                        LogException("_eFormProcessedByServer got exception : " + exception.Message);
                     }
                 }
             }
             catch (Exception e)
             {
-                LogException("_caseCompleted got exception : " + e.Message);
+                LogException("_eFormProcessedByServer got exception : " + e.Message);
             }
 
         }
