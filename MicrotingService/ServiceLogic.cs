@@ -37,7 +37,7 @@ namespace MicrotingService
         private string _serviceLocation;
 
 #pragma warning disable 649
-        private readonly eFormCore.Core _sdkCore;
+        private readonly Core _sdkCore;
 #pragma warning restore 649
 
         [ImportMany(typeof(ISdkEventHandler), AllowRecomposition = true)]
@@ -52,7 +52,7 @@ namespace MicrotingService
                 LogEvent("Service called");
                 {
                     _serviceLocation = "";
-                    _sdkCore = new eFormCore.Core();
+                    _sdkCore = new Core();
 
                     //An aggregate catalog that combines multiple catalogs
                     var catalog = new AggregateCatalog();
@@ -125,12 +125,6 @@ namespace MicrotingService
         }
 
         #region public state
-        public void Start()
-        {
-
-            string connectionString = File.ReadAllText(GetServiceLocation() + "input\\sql_connection_sdkCore.txt").Trim();
-            Start(connectionString);
-        }
 
         public void Start(string sdkSqlCoreStr)
         {
@@ -140,9 +134,9 @@ namespace MicrotingService
 
                 foreach (Lazy<ISdkEventHandler> i in _eventHandlers)
                 {
-                    LogEvent("Trying to start plugin : " + i.Value.GetType().ToString());
+                    LogEvent("Trying to start plugin : " + i.Value.GetType());
                     i.Value.Start(sdkSqlCoreStr, GetServiceLocation());
-                    LogEvent(i.Value.GetType().ToString() + " started successfully!");
+                    LogEvent(i.Value.GetType() + " started successfully!");
                 }
             }
             catch (Exception e)
@@ -233,11 +227,6 @@ namespace MicrotingService
             }
         }
 
-        public void OverrideServiceLocation(string serviceLocation)
-        {
-            this._serviceLocation = serviceLocation;
-            LogEvent("serviceLocation:'" + serviceLocation + "'");
-        }
         #endregion
 
         #region private
@@ -246,7 +235,7 @@ namespace MicrotingService
             if (_serviceLocation != "")
                 return _serviceLocation;
 
-            _serviceLocation = System.Reflection.Assembly.GetExecutingAssembly().Location;
+            _serviceLocation = Assembly.GetExecutingAssembly().Location;
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
                 _serviceLocation = Path.GetDirectoryName(_serviceLocation) + "\\";
