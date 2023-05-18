@@ -37,7 +37,7 @@ namespace MicrotingService
         private string _serviceLocation;
 
 #pragma warning disable 649
-        private readonly eFormCore.Core _sdkCore;
+        private readonly Core _sdkCore;
 #pragma warning restore 649
 
         [ImportMany(typeof(ISdkEventHandler), AllowRecomposition = true)]
@@ -52,7 +52,7 @@ namespace MicrotingService
                 LogEvent("Service called");
                 {
                     _serviceLocation = "";
-                    _sdkCore = new eFormCore.Core();
+                    _sdkCore = new Core();
 
                     //An aggregate catalog that combines multiple catalogs
                     var catalog = new AggregateCatalog();
@@ -125,12 +125,6 @@ namespace MicrotingService
         }
 
         #region public state
-        public void Start()
-        {
-
-            string connectionString = File.ReadAllText(GetServiceLocation() + "input\\sql_connection_sdkCore.txt").Trim();
-            Start(connectionString);
-        }
 
         public void Start(string sdkSqlCoreStr)
         {
@@ -140,9 +134,9 @@ namespace MicrotingService
 
                 foreach (Lazy<ISdkEventHandler> i in _eventHandlers)
                 {
-                    LogEvent("Trying to start plugin : " + i.Value.GetType().ToString());
+                    LogEvent("Trying to start plugin : " + i.Value.GetType());
                     i.Value.Start(sdkSqlCoreStr, GetServiceLocation());
-                    LogEvent(i.Value.GetType().ToString() + " started successfully!");
+                    LogEvent(i.Value.GetType() + " started successfully!");
                 }
             }
             catch (Exception e)
@@ -156,25 +150,20 @@ namespace MicrotingService
             {
                 LogEvent("Service Start called");
                 {
-                    // start debugger?
-                    if (File.Exists(GetServiceLocation() + "input\\debug.txt"))
-                    {
-                        LogEvent("Debugger called");
-                        System.Diagnostics.Debugger.Launch();
-                    }
-
                     #region start SDK core
                     #region event connecting
+
                     try
                     {
                         _sdkCore.HandleEventException -= CoreEventException;
                         _sdkCore.HandleCaseRetrived += _caseRetrived;
                         _sdkCore.HandleCaseCompleted += _caseCompleted;
-                        //_sdkCore.HandleNotificationNotFound += _caseCompleted;
                         _sdkCore.HandleeFormProcessedByServer += _eFormProcessedByServer;
-                        LogEvent("Core exception events disconnected (if needed)");
                     }
-                    catch { }
+                    catch (Exception exception)
+                    {
+                        Console.WriteLine($"We got the following exception while trying to connect to events: {exception.Message}");
+                    }
 
                     _sdkCore.HandleEventException += CoreEventException;
                     LogEvent("Core exception events connected");
@@ -191,7 +180,7 @@ namespace MicrotingService
                         LogEvent($"Unable to connect to database (sleeping 5 minutes), using {sdkSqlCoreStr}");
                         Thread.Sleep(300000);
                     }
-                    _sdkCore.Start(sdkSqlCoreStr);
+                    _sdkCore.Start(sdkSqlCoreStr).GetAwaiter().GetResult();
 
                     CheckUploadedDataIntegrity(dbContext, _sdkCore);
 
@@ -238,11 +227,6 @@ namespace MicrotingService
             }
         }
 
-        public void OverrideServiceLocation(string serviceLocation)
-        {
-            this._serviceLocation = serviceLocation;
-            LogEvent("serviceLocation:'" + serviceLocation + "'");
-        }
         #endregion
 
         #region private
@@ -251,7 +235,7 @@ namespace MicrotingService
             if (_serviceLocation != "")
                 return _serviceLocation;
 
-            _serviceLocation = System.Reflection.Assembly.GetExecutingAssembly().Location;
+            _serviceLocation = Assembly.GetExecutingAssembly().Location;
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
                 _serviceLocation = Path.GetDirectoryName(_serviceLocation) + "\\";
@@ -275,12 +259,12 @@ namespace MicrotingService
                 {
                     try
                     {
-                        LogEvent("Trying to send event caseRetrieved to plugin : " + i.Value.GetType().ToString());
+                        LogEvent("Trying to send event caseRetrieved to plugin : " + i.Value.GetType());
                         i.Value.eFormRetrived(sender, args);
                     }
                     catch (Exception exception)
                     {
-                        LogException("_caseCompleted got exception : " + exception.Message);
+                        LogException("_caseRetrived got exception : " + exception.Message);
                     }
                 }
             }
@@ -302,7 +286,7 @@ namespace MicrotingService
                 {
                     try
                     {
-                        LogEvent("Trying to send event _caseCompleted to plugin : " + i.Value.GetType().ToString());
+                        LogEvent("Trying to send event _caseCompleted to plugin : " + i.Value.GetType());
                         i.Value.CaseCompleted(sender, args);
                     }
                     catch (Exception exception)
@@ -330,18 +314,18 @@ namespace MicrotingService
                 {
                     try
                     {
-                        LogEvent("Trying to send event _eFormProcessedByServer to plugin : " + i.Value.GetType().ToString());
+                        LogEvent("Trying to send event _eFormProcessedByServer to plugin : " + i.Value.GetType());
                         i.Value.eFormProcessed(sender, args);
                     }
                     catch (Exception exception)
                     {
-                        LogException("_caseCompleted got exception : " + exception.Message);
+                        LogException("_eFormProcessedByServer got exception : " + exception.Message);
                     }
                 }
             }
             catch (Exception e)
             {
-                LogException("_caseCompleted got exception : " + e.Message);
+                LogException("_eFormProcessedByServer got exception : " + e.Message);
             }
 
         }
