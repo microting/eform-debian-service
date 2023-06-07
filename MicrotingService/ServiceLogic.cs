@@ -406,16 +406,10 @@ namespace MicrotingService
                 s3Client = new AmazonS3Client(s3AccessKeyId, s3SecretAccessKey, RegionEndpoint.EUCentral1);
 
             }
-            var uploadedDatas = dbContext.UploadedDatas.Where(x => x.FileLocation.Contains("https")).ToList();
+            var uploadedDatas = dbContext.UploadedDatas.Where(x => x.Local == 1 || x.FileLocation.Contains("https")).ToList();
 
             foreach (UploadedData ud in uploadedDatas)
             {
-
-                GetObjectMetadataRequest request = new GetObjectMetadataRequest
-                {
-                    BucketName = $"{s3BucktName}/{customerNo}",
-                    Key = ud.FileName
-                };
                 if (ud.FileName == null)
                 {
                     core.DownloadUploadedData(ud.Id).GetAwaiter().GetResult();
@@ -424,6 +418,11 @@ namespace MicrotingService
                 {
                     try
                     {
+                        GetObjectMetadataRequest request = new GetObjectMetadataRequest
+                        {
+                            BucketName = $"{s3BucktName}/{customerNo}",
+                            Key = ud.FileName
+                        };
                         var result = s3Client.GetObjectMetadataAsync(request).ConfigureAwait(false).GetAwaiter().GetResult();
                     }
                     catch (AmazonS3Exception s3Exception)
@@ -431,6 +430,24 @@ namespace MicrotingService
                         if (s3Exception.ErrorCode == "Forbidden")
                         {
                             core.DownloadUploadedData(ud.Id).GetAwaiter().GetResult();
+                        }
+                    } catch (Exception ex)
+                    {
+                        try
+                        {
+                            GetObjectMetadataRequest request = new GetObjectMetadataRequest
+                            {
+                                BucketName = s3BucktName,
+                                Key = $"{s3BucktName}/{ud.FileName}"
+                            };
+                            var result = s3Client.GetObjectMetadataAsync(request).ConfigureAwait(false).GetAwaiter().GetResult();
+                        }
+                        catch (AmazonS3Exception s3Exception)
+                        {
+                            if (s3Exception.ErrorCode == "Forbidden")
+                            {
+                                core.DownloadUploadedData(ud.Id).GetAwaiter().GetResult();
+                            }
                         }
                     }
                 }
