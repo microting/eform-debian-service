@@ -29,7 +29,7 @@
             <PackageReference Include="System.ComponentModel.EventBasedAsync" Version="4.3.0" />
             <PackageReference Include="System.Composition" Version="7.0.0" />
             <PackageReference Include="System.Composition.Hosting" Version="7.0.0" />
-            <PackageReference Include="System.Management" Version="7.0.1" />
+            <PackageReference Include="System.Management" Version="7.0.2" />
             <PackageReference Include="System.Private.ServiceModel" Version="4.10.2" />
             <PackageReference Include="System.Security.Cryptography.Xml" Version="7.0.1" />
       </ItemGroup>
