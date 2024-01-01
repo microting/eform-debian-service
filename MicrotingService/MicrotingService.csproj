@@ -18,23 +18,23 @@
       <ItemGroup>
             <PackageReference Include="HarfBuzzSharp.NativeAssets.Linux" Version="7.3.0" />
             <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="8.0.0" />
-            <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="7.0.0" />
-            <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1" />
+            <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="8.0.0" />
+            <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
             <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="8.0.0" />
             <PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="8.0.0" />
             <PackageReference Include="Microting.eForm" Version="8.0.0" />
             <PackageReference Include="Microting.WindowsService.BasePn" Version="2.0.0" />
-            <PackageReference Include="Sentry" Version="3.41.2" />
+            <PackageReference Include="Sentry" Version="3.41.3" />
             <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="2.88.6" />
             <PackageReference Include="System.ComponentModel" Version="4.3.0" />
             <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
-            <PackageReference Include="System.ComponentModel.Composition" Version="7.0.0" />
+            <PackageReference Include="System.ComponentModel.Composition" Version="8.0.0" />
             <PackageReference Include="System.ComponentModel.EventBasedAsync" Version="4.3.0" />
-            <PackageReference Include="System.Composition" Version="7.0.0" />
-            <PackageReference Include="System.Composition.Hosting" Version="7.0.0" />
-            <PackageReference Include="System.Management" Version="7.0.2" />
+            <PackageReference Include="System.Composition" Version="8.0.0" />
+            <PackageReference Include="System.Composition.Hosting" Version="8.0.0" />
+            <PackageReference Include="System.Management" Version="8.0.0" />
             <PackageReference Include="System.Private.ServiceModel" Version="4.10.3" />
-            <PackageReference Include="System.Security.Cryptography.Xml" Version="7.0.1" />
+            <PackageReference Include="System.Security.Cryptography.Xml" Version="8.0.0" />
       </ItemGroup>
 
 </Project>
