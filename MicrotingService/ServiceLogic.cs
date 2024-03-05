@@ -61,15 +61,15 @@ namespace MicrotingService
                     LogEvent("Start loading plugins...");
                     try
                     {
-                        string path = Path.Combine(GetServiceLocation(), @"Plugins");
+                        string path = Path.Combine(GetServiceLocation(), "Plugins");
                         Directory.CreateDirectory(path);
                         LogEvent("Path for plugins is : " + path);
                         foreach (string dir in Directory.GetDirectories(path))
                         {
-                            if (Directory.Exists(Path.Combine(dir, "net7.0")))
+                            if (Directory.Exists(Path.Combine(dir, "net8.0")))
                             {
-                                LogEvent("Loading Plugin : " + Path.Combine(dir, "net7.0"));
-                                catalog.Catalogs.Add(new DirectoryCatalog(Path.Combine(dir, "net7.0")));
+                                LogEvent("Loading Plugin : " + Path.Combine(dir, "net8.0"));
+                                catalog.Catalogs.Add(new DirectoryCatalog(Path.Combine(dir, "net8.0")));
                             } else
                             {
                                 LogEvent("Loading Plugin : " + dir);
@@ -207,9 +207,9 @@ namespace MicrotingService
 
                         foreach (Lazy<ISdkEventHandler> i in _eventHandlers)
                         {
-                            LogEvent("Trying to stop plugin : " + i.Value.GetType().ToString());
+                            LogEvent("Trying to stop plugin : " + i.Value.GetType());
                             i.Value.Stop(false);
-                            LogEvent(i.Value.GetType().ToString() + " stopped successfully!");
+                            LogEvent(i.Value.GetType() + " stopped successfully!");
                         }
                     }
                     catch (Exception e)
