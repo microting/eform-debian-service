@@ -182,7 +182,7 @@ namespace MicrotingService
                     }
                     _sdkCore.Start(sdkSqlCoreStr).GetAwaiter().GetResult();
 
-                    CheckUploadedDataIntegrity(dbContext, _sdkCore);
+                    //CheckUploadedDataIntegrity(dbContext, _sdkCore);
 
                     LogEvent("SDK Core started");
                     #endregion
