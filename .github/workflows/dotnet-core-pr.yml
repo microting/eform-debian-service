@@ -43,11 +43,6 @@ jobs:
       uses: docker/setup-qemu-action@v1
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v1
-    - name: Login to DockerHub
-      uses: docker/login-action@v1
-      with:
-        username: ${{ secrets.DOCKERHUB_USERNAME }}
-        password: ${{ secrets.DOCKERHUB_TOKEN }}
     - name: Build the tagged Docker image
       run: docker build . -t microtingas/debian-service:latest -t microtingas/debian-service:1.0.0 --build-arg GITVERSION=1.0.0
     - name: Start the newly build Docker container
