@@ -47,6 +47,21 @@ namespace MicrotingService
                 Console.WriteLine("Using connection string from config");
                 Console.WriteLine($"Connection string: {_config.Value.ConnectionString}");
                 serverConnectionString = _config.Value.ConnectionString;
+                var clientEmail = _config.Value.ClientEmail;
+                var privateKeyId =_config.Value.PrivateKeyId;
+                var privateKey = _config.Value.PrivateKey;
+                var clientId = _config.Value.ClientId;
+                var projectId = _config.Value.ProjectId;
+                Environment.SetEnvironmentVariable("CLIENT_EMAIL", clientEmail);
+                Console.WriteLine("CLIENT_EMAIL: " + clientEmail);
+                Environment.SetEnvironmentVariable("PRIVATE_KEY_ID", privateKeyId);
+                Console.WriteLine("PRIVATE_KEY_ID: " + privateKeyId);
+                Environment.SetEnvironmentVariable("PRIVATE_KEY", privateKey);
+                Console.WriteLine("PRIVATE_KEY: " + privateKey);
+                Environment.SetEnvironmentVariable("CLIENT_ID", clientId);
+                Console.WriteLine("CLIENT_ID: " + clientId);
+                Environment.SetEnvironmentVariable("PROJECT_ID", projectId);
+                Console.WriteLine("PROJECT_ID: " + projectId);
             }
 
             string pattern = @"Database=(\d+)_Angular;";
