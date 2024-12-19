@@ -38,4 +38,11 @@
             <PackageReference Include="System.Security.Cryptography.Xml" Version="8.0.2" />
       </ItemGroup>
 
+      <ItemGroup>
+        <None Remove="connection.json" />
+        <Content Include="connection.json">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+      </ItemGroup>
+
 </Project>

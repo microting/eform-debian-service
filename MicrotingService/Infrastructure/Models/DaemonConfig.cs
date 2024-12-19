@@ -1,4 +1,4 @@
-namespace MicrotingService
+namespace MicrotingService.Infrastructure.Models
 {
     public class DaemonConfig
     {
