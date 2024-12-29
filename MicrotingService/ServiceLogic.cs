@@ -26,6 +26,7 @@ using Microting.eForm.Infrastructure;
 using Microting.eForm.Infrastructure.Data.Entities;
 using Microting.eForm.Infrastructure.Helpers;
 using Microting.WindowsService.BasePn;
+using Sentry;
 
 namespace MicrotingService
 {
@@ -119,6 +120,7 @@ namespace MicrotingService
             }
             catch (Exception ex)
             {
+                SentrySdk.CaptureException(ex);
                 LogException(t.PrintException("Fatal Exception", ex));
                 throw;
             }
@@ -191,6 +193,7 @@ namespace MicrotingService
             }
             catch (Exception ex)
             {
+                SentrySdk.CaptureException(ex);
                 LogException(t.PrintException("Fatal Exception", ex));
 				throw;
             }
@@ -223,6 +226,7 @@ namespace MicrotingService
             }
             catch (Exception ex)
             {
+                SentrySdk.CaptureException(ex);
                 LogException(t.PrintException("Fatal Exception", ex));
             }
         }
