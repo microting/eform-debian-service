@@ -51,9 +51,6 @@
 
       <ItemGroup>
         <None Remove="connection.json" />
-        <Content Include="connection.json">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </Content>
       </ItemGroup>
 
 </Project>
