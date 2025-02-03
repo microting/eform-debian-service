@@ -49,4 +49,8 @@
             <PackageReference Include="System.Security.Cryptography.Xml" Version="9.0.1" />
       </ItemGroup>
 
+      <ItemGroup>
+        <None Remove="connection.json" />
+      </ItemGroup>
+
 </Project>
