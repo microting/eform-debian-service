@@ -67,10 +67,10 @@ namespace MicrotingService
                         LogEvent("Path for plugins is : " + path);
                         foreach (string dir in Directory.GetDirectories(path))
                         {
-                            if (Directory.Exists(Path.Combine(dir, "net8.0")))
+                            if (Directory.Exists(Path.Combine(dir, "net9.0")))
                             {
-                                LogEvent("Loading Plugin : " + Path.Combine(dir, "net8.0"));
-                                catalog.Catalogs.Add(new DirectoryCatalog(Path.Combine(dir, "net8.0")));
+                                LogEvent("Loading Plugin : " + Path.Combine(dir, "net9.0"));
+                                catalog.Catalogs.Add(new DirectoryCatalog(Path.Combine(dir, "net9.0")));
                             } else
                             {
                                 LogEvent("Loading Plugin : " + dir);
