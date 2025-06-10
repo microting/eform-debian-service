@@ -28,25 +28,25 @@
 
       <ItemGroup>
             <PackageReference Include="HarfBuzzSharp.NativeAssets.Linux" Version="8.3.1.1" />
-            <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="9.0.5" />
-            <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="9.0.5" />
-            <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.5" />
-            <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="9.0.5" />
-            <PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="9.0.5" />
+            <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="9.0.6" />
+            <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="9.0.6" />
+            <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.6" />
+            <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="9.0.6" />
+            <PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="9.0.6" />
             <PackageReference Include="Microting.eForm" Version="9.0.37" />
             <PackageReference Include="Microting.WindowsService.BasePn" Version="2.0.0" />
-            <PackageReference Include="QuestPDF" Version="2025.5.0" />
-            <PackageReference Include="Sentry" Version="5.9.0" />
+            <PackageReference Include="QuestPDF" Version="2025.5.1" />
+            <PackageReference Include="Sentry" Version="5.10.0" />
             <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="3.119.0" />
             <PackageReference Include="System.ComponentModel" Version="4.3.0" />
             <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
-            <PackageReference Include="System.ComponentModel.Composition" Version="9.0.5" />
+            <PackageReference Include="System.ComponentModel.Composition" Version="9.0.6" />
             <PackageReference Include="System.ComponentModel.EventBasedAsync" Version="4.3.0" />
-            <PackageReference Include="System.Composition" Version="9.0.5" />
-            <PackageReference Include="System.Composition.Hosting" Version="9.0.5" />
-            <PackageReference Include="System.Management" Version="9.0.5" />
+            <PackageReference Include="System.Composition" Version="9.0.6" />
+            <PackageReference Include="System.Composition.Hosting" Version="9.0.6" />
+            <PackageReference Include="System.Management" Version="9.0.6" />
             <PackageReference Include="System.Private.ServiceModel" Version="4.10.3" />
-            <PackageReference Include="System.Security.Cryptography.Xml" Version="9.0.5" />
+            <PackageReference Include="System.Security.Cryptography.Xml" Version="9.0.6" />
       </ItemGroup>
 
       <ItemGroup>
