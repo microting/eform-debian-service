@@ -35,8 +35,8 @@
             <PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="9.0.6" />
             <PackageReference Include="Microting.eForm" Version="9.0.40" />
             <PackageReference Include="Microting.WindowsService.BasePn" Version="2.0.0" />
-            <PackageReference Include="QuestPDF" Version="2025.5.1" />
-            <PackageReference Include="Sentry" Version="5.11.0" />
+            <PackageReference Include="QuestPDF" Version="2025.7.0" />
+            <PackageReference Include="Sentry" Version="5.11.2" />
             <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="3.119.0" />
             <PackageReference Include="System.ComponentModel" Version="4.3.0" />
             <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
