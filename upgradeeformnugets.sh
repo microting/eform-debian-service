@@ -7,7 +7,7 @@ if (( "$GIT_STATUS" > 0 )); then
 	cd MicrotingService
   CURRENT_NUMBER_OF_COMMITS=`git log --oneline | wc -l`
 
-	PACKAGES=('Microting.eForm' 'Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation' 'Microsoft.Extensions.Identity.Stores' 'Microsoft.Extensions.Localization.Abstractions' 'Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation' 'Microsoft.Extensions.Identity.Stores' 'Microsoft.Extensions.Localization.Abstractions' 'System.Private.ServiceModel' 'Sentry' 'QuestPDF')
+	PACKAGES=('Microting.eForm' 'Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation' 'Microsoft.Extensions.Identity.Stores' 'Microsoft.Extensions.Localization.Abstractions' 'Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation' 'Microsoft.Extensions.Identity.Stores' 'Microsoft.Extensions.Localization.Abstractions' 'System.Private.ServiceModel' 'Microsoft.Extensions.DependencyModel' 'System.ComponentModel.Composition' 'Sentry' 'QuestPDF')
 	PROJECT_NAME='MicrotingService.csproj'
 	REPOSITORY='eform-debian-service'
 
