@@ -42,7 +42,9 @@ namespace MicrotingService
 #pragma warning restore 649
 
         [ImportMany(typeof(ISdkEventHandler), AllowRecomposition = true)]
+#pragma warning disable CS0649 // Field is assigned by MEF composition
         private IEnumerable<Lazy<ISdkEventHandler>> _eventHandlers;
+#pragma warning restore CS0649
         #endregion
 
         //con
@@ -338,15 +340,14 @@ namespace MicrotingService
         #region _caseNotFound
         private void _caseNoFound(object sender, EventArgs args)
         {
-
-            NoteDto trigger = (NoteDto)sender;
+            // Event handler - no action needed
         }
         #endregion
 
         private void CoreEventException(object sender, EventArgs args)
         {
             //DOSOMETHING: changed to fit your wishes and needs
-            Exception ex = (Exception)sender;
+            // Exception handling can be added here if needed
         }
 
         private void LogEvent(string appendText)
@@ -435,7 +436,7 @@ namespace MicrotingService
                         {
                             core.DownloadUploadedData(ud.Id).GetAwaiter().GetResult();
                         }
-                    } catch (Exception ex)
+                    } catch
                     {
                         try
                         {
