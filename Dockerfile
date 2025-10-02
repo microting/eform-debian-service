@@ -4,7 +4,7 @@ WORKDIR /app
 
 # Copy csproj and restore as distinct layers
 COPY . ./
-RUN dotnet publish -o out /p:Version=$GITVERSION --runtime linux-x64 --configuration Release
+RUN dotnet publish MicrotingService/MicrotingService.csproj -o out /p:Version=$GITVERSION --runtime linux-x64 --configuration Release
 RUN pwd
 
 # Build runtime image
