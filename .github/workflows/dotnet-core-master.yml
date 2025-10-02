@@ -11,7 +11,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Create docker network
       run: docker network create --driver bridge data
     - name: Start MariaDB
@@ -23,14 +23,14 @@ jobs:
         docker pull rabbitmq:latest
         docker run -d --hostname my-rabbit --name some-rabbit --network data -e RABBITMQ_DEFAULT_USER=admin -e RABBITMQ_DEFAULT_PASS=password rabbitmq:latest
     - name: Setup .NET Core
-      uses: actions/setup-dotnet@v3
+      uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 9.0.x
     - name: Install dependencies
       run: dotnet restore
     - name: Get the version
       id: get_version
-      run: echo ::set-output name=VERSION::$(git describe --abbrev=0 --tags | cut -d "v" -f 2)
+      run: echo "VERSION=$(git describe --abbrev=0 --tags | cut -d "v" -f 2)" >> $GITHUB_OUTPUT
     - name: Build
       run: dotnet build --configuration Release --no-restore
     - name: Test
@@ -40,11 +40,11 @@ jobs:
         docker exec -i mariadbtest mysql -u root --password=secretpassword -e 'create database `420_SDK`'
         docker exec -i mariadbtest mysql -u root --password=secretpassword 420_SDK < 420_SDK.sql
     - name: Set up QEMU
-      uses: docker/setup-qemu-action@v1
+      uses: docker/setup-qemu-action@v3
     - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v1
+      uses: docker/setup-buildx-action@v3
     - name: Login to DockerHub
-      uses: docker/login-action@v1
+      uses: docker/login-action@v3
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
