@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:9.0-bookworm-slim AS build-env
+FROM mcr.microsoft.com/dotnet/sdk:10.0-bookworm-slim AS build-env
 ARG GITVERSION
 WORKDIR /app
 
@@ -8,7 +8,7 @@ RUN dotnet publish MicrotingService/MicrotingService.csproj -o out /p:Version=$G
 RUN pwd
 
 # Build runtime image
-FROM mcr.microsoft.com/dotnet/aspnet:9.0-bookworm-slim
+FROM mcr.microsoft.com/dotnet/aspnet:10.0-bookworm-slim
 WORKDIR /app
 COPY --from=build-env /app/out .
 
