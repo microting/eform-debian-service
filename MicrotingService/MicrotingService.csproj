@@ -30,7 +30,7 @@
             <PackageReference Include="HarfBuzzSharp.NativeAssets.Linux" Version="8.3.1.2" />
             <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="10.0.1" />
             <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="10.0.1" />
-            <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.0" />
+            <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.1" />
             <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="10.0.1" />
             <PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="10.0.1" />
             <PackageReference Include="Microting.eForm" Version="10.0.0" />
@@ -42,11 +42,11 @@
             <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
             <PackageReference Include="System.ComponentModel.Composition" Version="10.0.1" />
             <PackageReference Include="System.ComponentModel.EventBasedAsync" Version="4.3.0" />
-            <PackageReference Include="System.Composition" Version="9.0.10" />
-            <PackageReference Include="System.Composition.Hosting" Version="9.0.10" />
-            <PackageReference Include="System.Management" Version="9.0.10" />
+            <PackageReference Include="System.Composition" Version="10.0.1" />
+            <PackageReference Include="System.Composition.Hosting" Version="10.0.1" />
+            <PackageReference Include="System.Management" Version="10.0.1" />
             <PackageReference Include="System.Private.ServiceModel" Version="4.10.3" />
-            <PackageReference Include="System.Security.Cryptography.Xml" Version="9.0.10" />
+            <PackageReference Include="System.Security.Cryptography.Xml" Version="10.0.1" />
       </ItemGroup>
 
       <ItemGroup>
