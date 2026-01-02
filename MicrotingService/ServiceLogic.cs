@@ -166,7 +166,7 @@ namespace MicrotingService
                     }
                     catch (Exception exception)
                     {
-                        Console.WriteLine($"We got the following exception while trying to connect to events: {exception.Message}");
+                        Console.WriteLine($"fail: We got the following exception while trying to connect to events: {exception.Message}");
                     }
 
                     _sdkCore.HandleEventException += CoreEventException;
@@ -356,7 +356,7 @@ namespace MicrotingService
             {
                 var oldColor = Console.ForegroundColor;
                 Console.ForegroundColor = ConsoleColor.Gray;
-                Console.WriteLine("[DBG] " + appendText);
+                Console.WriteLine($"dbug: {appendText}");
                 Console.ForegroundColor = oldColor;
             }
             catch
@@ -370,7 +370,7 @@ namespace MicrotingService
             {
                 var oldColor = Console.ForegroundColor;
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("[ERR] " + appendText);
+                Console.WriteLine($"fail: {appendText}");
                 Console.ForegroundColor = oldColor;
             }
             catch
