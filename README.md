@@ -2,6 +2,7 @@
 [![.NET Core](https://github.com/microting/eform-debian-service/actions/workflows/dotnet-core-master.yml/badge.svg)](https://github.com/microting/eform-debian-service/actions/workflows/dotnet-core-master.yml)
 [![Maintainability](https://api.codeclimate.com/v1/badges/be6f8f0572bcc672f3d5/maintainability)](https://codeclimate.com/github/microting/eform-debian-service/maintainability)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/6621de3109a04869b2bbfc0dedd5691d)](https://www.codacy.com/gh/microting/eform-debian-service/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=microting/eform-debian-service&amp;utm_campaign=Badge_Grade)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fmicroting%2Feform-debian-service.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fmicroting%2Feform-debian-service?ref=badge_shield)
 
 ## NOTICE! this is not a standalone project and needs to be used with eForm Angular Frontend.
 
@@ -58,3 +59,6 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fmicroting%2Feform-debian-service.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fmicroting%2Feform-debian-service?ref=badge_large)
